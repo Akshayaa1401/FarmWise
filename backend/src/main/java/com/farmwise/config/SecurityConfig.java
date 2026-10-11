@@ -66,17 +66,14 @@ public class SecurityConfig {
 
         // Local development URLs and your deployed Vercel frontend
         configuration.setAllowedOrigins(List.of(
-                "http://localhost:5173",
-                "http://localhost:5174",
-                "http://localhost:3000",
-                "http://127.0.0.1:5173",
-                "http://127.0.0.1:5174",
-                "http://127.0.0.1:3000",
-
-                // REPLACE THIS with your actual Vercel website URL
-                "https://YOUR-VERCEL-DOMAIN.vercel.app"
-        ));
-
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:3000",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:5174",
+        "http://127.0.0.1:3000",
+        "https://YOUR-VERCEL-DOMAIN.vercel.app"
+));
         configuration.setAllowedMethods(Arrays.asList(
                 "GET",
                 "POST",
