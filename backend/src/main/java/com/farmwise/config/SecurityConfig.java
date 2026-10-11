@@ -72,7 +72,7 @@ public class SecurityConfig {
         "http://127.0.0.1:5173",
         "http://127.0.0.1:5174",
         "http://127.0.0.1:3000",
-        "https://YOUR-VERCEL-DOMAIN.vercel.app"
+        "https://farm-wise-obd5ml8a3-farm-wise1.vercel.app"
 ));
         configuration.setAllowedMethods(Arrays.asList(
                 "GET",
