@@ -1,4 +1,4 @@
-```java
+
 package com.farmwise.config;
 
 import com.farmwise.security.JwtAuthenticationFilter;
@@ -138,4 +138,4 @@ public class SecurityConfig {
         return http.build();
     }
 }
-```
+
