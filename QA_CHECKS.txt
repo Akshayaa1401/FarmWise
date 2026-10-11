@@ -1,0 +1,60 @@
+FarmWise QA pass (2026-10-10)
+
+Changes included:
+- Recommendation page shows all evaluated rice/paddy catalog varieties ranked by suitability; removed the misleading prominent 98/100 corner-style display.
+- Recommendation cards link directly to seed comparison and local-shop search.
+- Shop search accepts a seed query from the URL and reminds users to confirm stock and price before travelling.
+- Comparison includes direct links to search shops for each compared variety.
+- Comparison API rejects null requests, empty IDs, duplicate seed selections, and any invalid selected ID rather than accidentally comparing the same variety twice.
+- Farm profile service validates required text fields, positive farm area, and pH range before saving, avoiding null-related failures when invoked outside controller validation. Harvest input also rejects non-finite area/yield values and handles null request bodies.
+- Farm Memory harvest outcomes remain limited to comparable recorded soil, water, and season conditions for ranking adjustments. The actual harvest season is preferred over the profile season snapshot; older records fall back to the snapshot.
+- Root cause found for only two recommendations: the backend demonstration catalog contained only Swarna and Pusa Basmati 1509. Expanded the startup catalog to 13 rice/paddy entries, including regionally relevant and lower-water options; startup seeding adds missing entries without duplicating names.
+- Catalog entries are explicitly marked demonstration data and warn farmers to verify official/local suitability. The same catalog records feed recommendation ranking, seed search/filtering, and seed comparison. Rice/Paddy crop filter aliases are normalized so selecting Rice or Paddy does not hide Rice/Paddy entries.
+
+Checks completed:
+- backend/pom.xml parses as XML.
+- frontend/package.json and package-lock.json parse as JSON.
+- Relative JavaScript/JSX imports resolve to files.
+- Basic Java source brace sanity check passed for all backend source files.
+- Catalog source check: 13 distinct demonstration seed entries are present; all constructor calls use the existing SeedVariety constructor signature.
+
+Important verification limit:
+- Full Java/Maven tests could not be run because Maven is not installed in this environment and the project has no Maven wrapper executable/JAR.
+- Full frontend build could not be run because Vite dependencies are not installed; npm installation did not complete in this environment.
+- Therefore this is a static QA pass, not a claim that runtime bugs are impossible. Run `mvn test` in backend and `npm ci && npm run build` in frontend on a machine with dependencies/network access before deployment.
+
+Additional hardening pass (2026-10-10):
+- Comparison picker now recognizes all crop aliases already accepted by the backend (Rice/Paddy, Rice, Paddy, Paddy/Rice, Rice Paddy), avoiding varieties being silently omitted from its picker.
+- Farm Memory now rejects blank cultivated-area/yield inputs in the frontend before converting them to numbers; this prevents a blank yield field from silently becoming 0.
+- Shop inventory stock-update and reserve endpoints now return a clear 400 response for a missing/null request body instead of throwing a null-pointer error.
+- Revalidated package JSON, package-lock JSON, and archive integrity after changes.
+
+Verification limitation remains: this environment has no Maven installation and no installed frontend dependencies, so full Spring tests, MongoDB integration tests, and a Vite production build cannot be claimed. Run the commands in README.md on a machine with dependencies installed.
+
+
+Crop problem/product workflow repair pass (2026-10-10):
+- Added authenticated crop-problem memory endpoint with required crop/problem/symptom validation and per-farmer records; added owner-checked treatment/outcome updates.
+- Added Crop Problems UI with symptom recording, cautious general guidance, treatment/outcome fields, and product-type shop links. Farm Resources nav now routes to Crop Problems.
+- Added productType/productName/description/recommendedFor fields to shop inventory and productType/productName to bookings, preserving compatibility with old seed records.
+- Shop search now includes product names/types and returns only matching product rows when the query matches a product rather than the shop. Added product type filters.
+- Added demonstration fertilizer, pest-control, and disease-management listings; booking validation supports these categories and validates price/stock before reserving.
+- Farm Memory now retrieves and displays all saved record types rather than harvest records only.
+- Removed fabricated numeric distance estimates; labels now say exact distance is unavailable.
+
+Validation limitation: these are source-level changes only. Maven is unavailable and npm dependencies are not installed in this environment, so the full Java build, Vite build, and MongoDB end-to-end flows still require execution on a machine with dependencies available. Demo product/price/stock data and non-GPS location matching must not be represented as live local data.
+
+
+Telangana all-district shop seeding update (2026-10-10):
+- Added idempotent backend startup creation of demo shops for all 33 Telangana districts, even if other-state shops already exist in MongoDB.
+- Each district shop gets demo inventory linked to the existing paddy seed catalog IDs, with stable IDs and sample stock/prices so the booking UI has bookable rows.
+- Shop records and inventory are marked demonstrationData=true; names and prices are not verified real businesses/offers.
+- Existing strict farmer-location filtering remains active for shop list, search, inventory, and booking validation.
+- Static check: district list contains 33 entries; inventory uses existing seed IDs; Java braces and ZIP integrity checked.
+- Verification limit: Maven is not installed in this environment and MongoDB is not connected here, so the backend was not compiled or run against a live database. Restart the updated backend with MongoDB available to create the records.
+
+Location filtering correction (2026-10-11):
+- Updated ShopLocationMatcher to require a matching village/locality or shared district/area token after validating state consistency; matching the state alone no longer includes every shop across Telangana.
+- The same matcher is used for shop listings and booking validation, so out-of-area shops are filtered consistently.
+- Updated matcher unit tests for same-village matches, same-district fallback, exclusion of another district in the same state, and state mismatch handling.
+- Nearby matching uses saved locality/district text because shop records do not contain coordinates. Exact distance or neighboring villages cannot be inferred unless the saved location data shares a locality/district token.
+- Validation limitation: Maven is unavailable in this environment, and the frontend dependency installation did not complete, so Java tests and the Vite build could not be run here.
