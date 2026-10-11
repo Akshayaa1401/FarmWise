@@ -64,7 +64,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         // Local development URLs and your deployed Vercel frontend
-        configuration.setAllowedOrigins(List.of(
+configuration.setAllowedOrigins(List.of(
         "http://localhost:5173",
         "http://localhost:5174",
         "http://localhost:3000",
@@ -73,7 +73,7 @@ public class SecurityConfig {
         "http://127.0.0.1:3000",
         "https://farm-wise-obd5ml8a3-farm-wise1.vercel.app"
 ));
-        configuration.setAllowedMethods(Arrays.asList(
+      configuration.setAllowedMethods(Arrays.asList(
                 "GET",
                 "POST",
                 "PUT",
