@@ -1,4 +1,3 @@
-
 package com.farmwise.config;
 
 import com.farmwise.security.JwtAuthenticationFilter;
