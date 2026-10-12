@@ -63,17 +63,18 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // Local development URLs and your deployed Vercel frontend
-configuration.setAllowedOrigins(List.of(
-        "http://localhost:5173",
-        "http://localhost:5174",
-        "http://localhost:3000",
-        "http://127.0.0.1:5173",
-        "http://127.0.0.1:5174",
-        "http://127.0.0.1:3000",
-        "https://farm-wise-obd5ml8a3-farm-wise1.vercel.app"
-));
-      configuration.setAllowedMethods(Arrays.asList(
+        // Local development URLs and deployed Vercel frontend
+        configuration.setAllowedOrigins(List.of(
+                "http://localhost:5173",
+                "http://localhost:5174",
+                "http://localhost:3000",
+                "http://127.0.0.1:5173",
+                "http://127.0.0.1:5174",
+                "http://127.0.0.1:3000",
+                "https://farm-wise-oqzg4yi24-farm-wise1.vercel.app"
+        ));
+
+        configuration.setAllowedMethods(Arrays.asList(
                 "GET",
                 "POST",
                 "PUT",
@@ -137,4 +138,3 @@ configuration.setAllowedOrigins(List.of(
         return http.build();
     }
 }
-
